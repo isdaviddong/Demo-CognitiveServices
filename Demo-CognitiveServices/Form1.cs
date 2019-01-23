@@ -1,4 +1,5 @@
 ﻿using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace Demo_CognitiveServices
 {
     public partial class Form1 : Form
     {
-        string ComputerVisionServiceKey = "f3wfqx2fdad124129sas0af96feac7a"; //更換成你自己的 Key
+        string ComputerVisionServiceKey = "f3306fdc7a"; //更換成你自己的 Key
         string ComputerVisionServiceEndpoint = "https://southeastasia.api.cognitive.microsoft.com/vision/v1.0";  //更換成你的endpoint
 
         public Form1()
@@ -51,7 +52,7 @@ namespace Demo_CognitiveServices
             {
                 //分析圖片
                 var Results = visionClient.AnalyzeImageAsync(
-                    MemStream1, new VisualFeature[] { VisualFeature.Faces, VisualFeature.Description }).Result;
+                    MemStream1, new VisualFeature[] { VisualFeature.Faces, VisualFeature.Adult }).Result;
                 //分別保存性別數量
                 int isM = 0, isF = 0;
                 //如果找到臉，就畫方框標示出來
@@ -61,14 +62,14 @@ namespace Demo_CognitiveServices
                     //畫框
                     g.DrawRectangle(
                                 new Pen(Brushes.Red, 3),
-                                new Rectangle(faceRect.Left, faceRect.Top,
+                                new System.Drawing.Rectangle(faceRect.Left, faceRect.Top,
                                     faceRect.Width, faceRect.Height));
                     //在方框旁邊顯示年紀
                     var age = 0;
                     if (item.Gender.StartsWith("F")) age = item.Age - 2; else age = item.Age;
                     //劃出數字
                     g.DrawString(age.ToString(), new Font(SystemFonts.DefaultFont.FontFamily, 30, FontStyle.Bold),
-                        new SolidBrush(Color.Yellow),
+                        new SolidBrush(System.Drawing.Color.Blue),
                         faceRect.Left + 3, faceRect.Top + 3);
                     //紀錄性別數量
                     if (item.Gender.StartsWith("M"))
@@ -77,7 +78,8 @@ namespace Demo_CognitiveServices
                         isF += 1;
                 }
                 //圖片分析結果
-                msg += $"\n\r圖片說明：\n\r{Results.Description.Captions[0].Text}";
+                if (Results.Description != null)
+                    msg += $"\n\r圖片說明：\n\r{Results.Description.Captions[0].Text}";
 
                 //如果update了照片，則顯示新圖
                 if (Results.Faces.Count() > 0)
@@ -89,6 +91,56 @@ namespace Demo_CognitiveServices
             this.pictureBox2.Image = bmp;
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var msg = "";
 
+            //取得圖片檔案FileStream
+            byte[] file = System.IO.File.ReadAllBytes(this.textBox1.Text);
+            Stream MemStream1 = new MemoryStream(file);
+            Stream MemStream2 = new MemoryStream(file);
+            //繪圖用
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(MemStream2);
+            Graphics g = Graphics.FromImage(bmp);
+            //ComputerVision instance
+            var visionClient = new Microsoft.ProjectOxford.Vision.VisionServiceClient(
+               ComputerVisionServiceKey, ComputerVisionServiceEndpoint);
+            //分析用
+            using (MemStream1)
+            {
+                //分析圖片
+                var OcrResults = visionClient.RecognizeTextAsync(
+                    MemStream1, LanguageCodes.AutoDetect).Result;
+
+                //抓取每一區塊的辨識結果
+                foreach (var Region in OcrResults.Regions)
+                {
+                 
+                    //抓取每一行
+                    foreach (var line in Region.Lines)
+                    {
+                        //畫框
+                        g.DrawRectangle(
+                                    new Pen(Brushes.Red, 3),
+                                    new System.Drawing.Rectangle(line.Rectangle.Left, line.Rectangle.Top,
+                                          line.Rectangle.Width, line.Rectangle.Height));
+
+                        var aline = "";
+                        //抓取每一個字
+                        foreach (var Word in line.Words)
+                        {
+                            //顯示辨識結果
+                            aline += Word.Text;
+                        }
+
+                        //加換行
+                            msg += aline + "  ,  ";
+                    }
+                }
+
+            }
+            this.textBox2.Text = msg;
+            this.pictureBox2.Image = bmp;
+        }
     }
 }
