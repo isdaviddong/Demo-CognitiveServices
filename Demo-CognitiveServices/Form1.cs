@@ -15,7 +15,7 @@ namespace Demo_CognitiveServices
 {
     public partial class Form1 : Form
     {
-        string ComputerVisionServiceKey = "f3306fdc7a"; //更換成你自己的 Key
+        string ComputerVisionServiceKey = ""; //更換成你自己的 Key
         string ComputerVisionServiceEndpoint = "https://southeastasia.api.cognitive.microsoft.com/vision/v1.0";  //更換成你的endpoint
 
         public Form1()
@@ -115,7 +115,7 @@ namespace Demo_CognitiveServices
                 //抓取每一區塊的辨識結果
                 foreach (var Region in OcrResults.Regions)
                 {
-                 
+
                     //抓取每一行
                     foreach (var line in Region.Lines)
                     {
@@ -123,7 +123,7 @@ namespace Demo_CognitiveServices
                         g.DrawRectangle(
                                     new Pen(Brushes.Red, 3),
                                     new System.Drawing.Rectangle(line.Rectangle.Left, line.Rectangle.Top,
-                                          line.Rectangle.Width, line.Rectangle.Height));
+                                            line.Rectangle.Width, line.Rectangle.Height));
 
                         var aline = "";
                         //抓取每一個字
@@ -134,10 +134,9 @@ namespace Demo_CognitiveServices
                         }
 
                         //加換行
-                            msg += aline + "  ,  ";
+                        msg += aline + "  ,  ";
                     }
                 }
-
             }
             this.textBox2.Text = msg;
             this.pictureBox2.Image = bmp;
