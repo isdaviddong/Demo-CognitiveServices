@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo-CognitiveServices", "Demo-CognitiveServices.csproj", "{AB8FCCAD-5DF5-4B0F-A056-DE6E9EF07EF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo-ComputerVision", "Demo-ComputerVision.csproj", "{AB8FCCAD-5DF5-4B0F-A056-DE6E9EF07EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo-TranslatorText", "..\Demo-TranslatorText\Demo-TranslatorText.csproj", "{EEE0106C-59A5-4F50-9811-4CCE9A11255C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AB8FCCAD-5DF5-4B0F-A056-DE6E9EF07EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB8FCCAD-5DF5-4B0F-A056-DE6E9EF07EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB8FCCAD-5DF5-4B0F-A056-DE6E9EF07EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE0106C-59A5-4F50-9811-4CCE9A11255C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE0106C-59A5-4F50-9811-4CCE9A11255C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE0106C-59A5-4F50-9811-4CCE9A11255C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE0106C-59A5-4F50-9811-4CCE9A11255C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
